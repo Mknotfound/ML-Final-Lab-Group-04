@@ -1,1 +1,3 @@
-
+*.parquet
+*.pq
+data/raw/*.parquet
