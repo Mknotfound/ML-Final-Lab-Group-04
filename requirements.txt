@@ -1,1 +1,10 @@
-
+numpy
+pandas
+scikit-learn
+lightgbm
+xgboost
+ember
+lief
+matplotlib
+seaborn
+joblib
