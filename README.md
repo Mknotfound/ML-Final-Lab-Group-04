@@ -1,7 +1,7 @@
-# EndpointShield AI — Enterprise Malware Classification Platform
+# EndpointShield — Enterprise Malware Classification Platform
 
 ## Executive Summary
-EndpointShield AI is an enterprise-grade AI solution designed to classify malicious versus benign binary files using purely static features extracted from Portable Executable (PE) headers, byte histograms, and import metadata[cite: 1]. Developed for enterprise security environments, the system evaluates incoming threats without executing files in memory, minimizing runtime risk while maximizing detection recall[cite: 1].
+EndpointShield is an enterprise-grade AI solution designed to classify malicious versus benign binary files using purely static features extracted from Portable Executable (PE) headers, byte histograms, and import metadata[cite: 1]. Developed for enterprise security environments, the system evaluates incoming threats without executing files in memory, minimizing runtime risk while maximizing detection recall[cite: 1].
 
 ---
 
