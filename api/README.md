@@ -36,7 +36,7 @@ Response Status: 200 OK
 
 Response Body:
 
-JSON
+```JSON
 {
   "threat_probability": 0.892,
   "prediction_label": "MALICIOUS",
@@ -44,7 +44,7 @@ JSON
   "action_recommended": "QUARANTINE_FILE"
 }
 Explanation: Because threat_probability (0.892) >= applied_threshold (0.20), the API automatically triggers a QUARANTINE_FILE recommended action to prevent potential breach costs.
-
+```
 ---
 B. Clean Binary Payload (Benign Sample)
 When a benign executable vector is evaluated:
@@ -53,7 +53,7 @@ Response Status: 200 OK
 
 Response Body:
 
-JSON
+```JSON
 {
   "threat_probability": 0.113,
   "prediction_label": "BENIGN",
@@ -61,6 +61,7 @@ JSON
   "action_recommended": "ALLOW_EXECUTION"
 }
 Explanation: Because threat_probability (0.113) < applied_threshold (0.20), the engine permits execution on host devices.
+```
 ---
 C. Input Validation Error (Payload Size Mismatch)
 If an incorrect array length (e.g., 4 features instead of 512) is submitted:
@@ -69,10 +70,11 @@ Response Status: 400 Bad Request
 
 Response Body:
 
-JSON
+```JSON
 {
   "detail": "Payload must contain exactly 512 static features."
 }
+```
 ---
 ---
 
