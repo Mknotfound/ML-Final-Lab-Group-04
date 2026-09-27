@@ -44,38 +44,3 @@ The production FastAPI pipeline was verified directly within the Google Colab en
 
 ```bash
 !PYTHONPATH=. pytest tests/test_api.py
-
-ML-Final-Lab-Group-04/
-├── api/
-│   ├── main.py                     # Production FastAPI application endpoints[cite: 1]
-│   └── README.md                   # API deployment & route documentation[cite: 1]
-├── data/
-│   ├── raw/
-│   │   └── sample_project.csv      # 1,503 PE executable feature sample dataset[cite: 1]
-│   ├── processed/
-│   │   └── baseline_model.pkl     # Serialized LightGBM model weights[cite: 1]
-│   └── README.md                   # Feature schema & dataset dictionary[cite: 1]
-├── dashboard/
-│   ├── Final project report.pbix   # Power BI interactive Threat Center dashboard[cite: 1]
-│   └── Final project report.pdf    # Executive dashboard PDF export[cite: 1]
-├── notebooks/
-│   ├── Baseline_Model.ipynb        # LightGBM training & ROC-AUC evaluation[cite: 1]
-│   ├── Cost_Threshold_Optimization.ipynb # 0.20 threshold cost analysis[cite: 1]
-│   ├── EDA.ipynb                   # Feature importance & entropy analysis[cite: 1]
-│   └── FastAPI_Pipeline_Server.ipynb# API integration & testing notebook[cite: 1]
-├── report/
-│   └── cost_curve (1).png          # Asymmetric business cost trade-off plot[cite: 1]
-├── reports/
-│   └── figures/
-│       └── api_test_proof.png      # Verified pytest execution output proof[cite: 1, 3]
-├── src/
-│   ├── extract_features.py         # Static PE byte & entropy feature extractor[cite: 1]
-│   ├── Dataset_preprocessing.py    # Stratified data loading & split pipeline[cite: 1]
-│   ├── predict.py                  # Model inference wrapper[cite: 1]
-│   ├── cost_analysis.py            # Business risk evaluation module[cite: 1]
-│   ├── sanity_check.py             # Feature dimension validator (512 features)[cite: 1]
-│   └── README.md                   # Core module source documentation[cite: 1]
-├── tests/
-│   └── test_api.py                 # Automated pytest unit test suite[cite: 1, 2]
-├── requirements.txt                # Locked environment dependencies[cite: 1]
-└── README.md                       # Project overview landing page[cite: 1]
