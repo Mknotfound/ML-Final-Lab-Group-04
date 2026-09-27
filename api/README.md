@@ -28,7 +28,7 @@ Input Constraint: Must contain an array of exactly 512 numerical feature values.
 }'
 ```
 ---
-🧪 Live Inference Test Outputs
+##🧪 Live Inference Test Outputs
 A. Malware Detected Payload (High Entropy Sample)
 When a high-risk vector extracted from data/raw/sample_project.csv is submitted:
 
@@ -46,7 +46,7 @@ Response Body:
 Explanation: Because threat_probability (0.892) >= applied_threshold (0.20), the API automatically triggers a QUARANTINE_FILE recommended action to prevent potential breach costs.
 ```
 ---
-B. Clean Binary Payload (Benign Sample)
+##B. Clean Binary Payload (Benign Sample)
 When a benign executable vector is evaluated:
 
 Response Status: 200 OK
@@ -63,7 +63,7 @@ Response Body:
 Explanation: Because threat_probability (0.113) < applied_threshold (0.20), the engine permits execution on host devices.
 ```
 ---
-C. Input Validation Error (Payload Size Mismatch)
+##C. Input Validation Error (Payload Size Mismatch)
 If an incorrect array length (e.g., 4 features instead of 512) is submitted:
 
 Response Status: 400 Bad Request
