@@ -15,3 +15,10 @@ pydantic>=1.10.0
 # Dashboard & Frontend Integration
 streamlit>=1.20.0
 requests>=2.28.0
+
+from pyngrok import ngrok
+import uvicorn
+import os
+import sys
+import nest_asyncio
+import threading
