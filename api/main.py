@@ -5,21 +5,21 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
-# 1. Initialize FastAPI with docs_url=None (we will serve a customized dark-mode /docs route)
+# Initialize FastAPI with docs_url=None so we render our custom Swagger UI
 app = FastAPI(
     title="🛡️ EndpointShield AI — Threat Operations Center",
     description="""
-    ### 🚀 Low-Latency Static PE Malware Detection Service
+    ### Low-Latency Static PE Malware Detection Engine
     
-    EndpointShield AI evaluates **512-feature static PE binary vectors** and applies an **asymmetric 0.20 risk threshold** ($100,000 False Negative breach cost vs. $50 False Positive analyst review cost) to enforce real-time binary quarantine.
+    Evaluates **512-feature static PE binary vectors** against Sneha's **0.20 decision cutoff** ($100,000 breach cost vs $50 analyst review cost).
     
-    * **Model Engine:** LightGBM Classifier (ROC-AUC: 0.94)[cite: 1]
-    * **Target Malware Recall:** 85.35%
-    * **Enforced Action Cutoff:** `0.20`[cite: 1]
+    * **Model Engine:** LightGBM Classifier (ROC-AUC: 0.94)
+    * **Target Recall:** 85.35%
+    * **Enforced Cutoff:** `0.20`
     * **Inference Latency:** < 15 ms
     """,
     version="1.0.0",
-    docs_url=None,  # Overridden below
+    docs_url=None,
     redoc_url="/redoc"
 )
 
@@ -41,13 +41,13 @@ except Exception as e:
     print(f"[!] Warning: Model failed to load ({e}). Engine in fallback mode.")
 
 class FeaturePayload(BaseModel):
-    features: list  # Expects list of 512 numerical static PE features[cite: 1]
+    features: list  # Expects list of 512 numerical features
 
 @app.get("/", include_in_schema=False)
 def health_check():
     return {"status": "online", "system": "EndpointShield AI Engine"}
 
-@app.post("/scan-binary", summary="🔍 Scan Static PE Binary Vector", description="Evaluates 512 static features and applies 0.20 threshold[cite: 1].")
+@app.post("/scan-binary", summary="🔍 Scan Static PE Binary", description="Evaluates 512 static features and applies 0.20 threshold.")
 def scan_binary(payload: FeaturePayload, threshold: float = 0.20):
     if len(payload.features) != 512:
         raise HTTPException(status_code=400, detail="Payload must contain exactly 512 static features.")
@@ -72,24 +72,24 @@ def scan_binary(payload: FeaturePayload, threshold: float = 0.20):
     }
 
 # ==============================================================================
-# ENHANCED DARK-MODE SWAGGER UI ROUTE
+# NATIVE DARK THEME SWAGGER UI
 # ==============================================================================
 @app.get("/docs", include_in_schema=False)
 async def custom_swagger_ui():
     return HTMLResponse("""
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
-        <title>EndpointShield AI — Swagger Operations</title>
+        <meta charset="UTF-8">
+        <title>EndpointShield AI — Swagger API Docs</title>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css">
+        <!-- Official Swagger UI Darkness Theme -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-darkness.css">
         <style>
-            /* Dark Theme Styling for Swagger UI */
-            body { background-color: #0d1117 !important; color: #c9d1d9 !important; margin: 0; }
-            .swagger-ui { filter: invert(88%) hue-rotate(180deg); }
-            .swagger-ui .topbar { display: none; } /* Hide default green topbar */
-            .swagger-ui img { filter: invert(100%) hue-rotate(180deg); } /* Fix image inversion */
-            .swagger-ui .info { margin: 30px 0; }
-            .swagger-ui .scheme-container { background-color: #161b22 !important; box-shadow: none !important; }
+            body { background-color: #1b1b1b !important; }
+            .swagger-ui .topbar { display: none !important; } /* Hide green topbar */
+            .swagger-ui .info { margin: 20px 0 !important; }
+            .swagger-ui .info .title { color: #58a6ff !important; }
         </style>
     </head>
     <body>
@@ -100,8 +100,8 @@ async def custom_swagger_ui():
                 window.ui = SwaggerUIBundle({
                     url: '/openapi.json',
                     dom_id: '#swagger-ui',
-                    docExpansion: 'full',        // Auto-expand endpoints on load
-                    defaultModelsExpandDepth: -1 // Hide cluttered schema objects at bottom
+                    docExpansion: 'full',         // Auto expand endpoints
+                    defaultModelsExpandDepth: -1  // Hide messy schema boxes at bottom
                 });
             };
         </script>
