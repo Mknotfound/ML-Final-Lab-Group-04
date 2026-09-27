@@ -46,6 +46,19 @@ The production FastAPI pipeline was verified directly within the Google Colab en
 !PYTHONPATH=. pytest tests/test_api.py
 ```
 ---
+
+## 📊 Executive Threat Center Dashboard
+
+The interactive Power BI threat dashboard (`dashboard/Final project report.pbix`) provides operational security visibility, tracking class distributions, static byte/entropy features, confusion matrices, and model metrics under Sneha's **0.20 risk threshold**.
+
+![EndpointShield Power BI Threat Center](report/figures/dashboard_preview.png)
+
+### Key Dashboard KPIs:
+* **Total Scanned Binaries:** 1,503 PE samples
+* **Enforced Decision Cutoff:** 0.20 Asymmetric Risk Threshold
+* **Target Malware Recall:** 85.35%
+* **Model Discrimination (ROC-AUC):** 0.94
+
 ```
 ML-Final-Lab-Group-04/
 ├── api/
