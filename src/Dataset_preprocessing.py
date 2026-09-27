@@ -7,10 +7,11 @@ Original file is located at
     https://colab.research.google.com/drive/1cFQBZIk_AsyWT4fFoX1iAeNp2OCOQS73
 """
 
-# create_sample.py
 import os
+import joblib
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 
 
 def load_dataset(file_path: str) -> pd.DataFrame:
@@ -29,7 +30,6 @@ def clean_and_split_features(df: pd.DataFrame, target_col: str = "label"):
     Separates target labels from feature matrix and removes invalid samples (-1).
     Returns X (features) and y (binary target).
     """
-    # Remove unlabeled rows if present in raw EMBER exports
     if target_col in df.columns:
         df = df[df[target_col] != -1].reset_index(drop=True)
         y = df[target_col].values
@@ -38,7 +38,6 @@ def clean_and_split_features(df: pd.DataFrame, target_col: str = "label"):
         y = None
         X = df
 
-    # Replace infinite or NaN values if any exist
     X = X.replace([np.inf, -np.inf], np.nan).fillna(0)
 
     print(f"[+] Cleaned features matrix shape: {X.shape}")
@@ -50,14 +49,46 @@ def clean_and_split_features(df: pd.DataFrame, target_col: str = "label"):
     return X, y
 
 
-if __name__ == "_main_":
-    # Test execution on raw sample
+def scale_features(X: pd.DataFrame, scaler: StandardScaler = None):
+    """
+    Scales static PE features to zero mean / unit variance.
+    If a fitted scaler is passed in, it is reused (transform only) —
+    this is how you must scale validation/test data or new inference
+    samples, to avoid leaking their statistics into the transform.
+    If no scaler is passed, a new one is fit on X (use this on training data).
+    Returns the scaled DataFrame and the fitted scaler.
+    """
+    if scaler is None:
+        scaler = StandardScaler()
+        X_scaled_array = scaler.fit_transform(X)
+        print("[+] Fitted new StandardScaler on this data.")
+    else:
+        X_scaled_array = scaler.transform(X)
+        print("[+] Applied existing StandardScaler (transform only).")
+
+    X_scaled = pd.DataFrame(X_scaled_array, columns=X.columns, index=X.index)
+    print(f"[+] Scaled features matrix shape: {X_scaled.shape}")
+    return X_scaled, scaler
+
+
+if __name__ == "__main__":
     sample_path = "data/raw/sample.csv"
     try:
         raw_df = load_dataset(sample_path)
         X, y = clean_and_split_features(raw_df)
+
+        X_scaled, fitted_scaler = scale_features(X)
+
+        # Persist the fitted scaler so downstream stages (or inference
+        # on new PE files later) apply the exact same transform.
+        os.makedirs("data/processed", exist_ok=True)
+        joblib.dump(fitted_scaler, "data/processed/pe_feature_scaler.pkl")
+
+        # Hand off clean, scaled data to the next stage (data analyst).
+        X_scaled.to_csv("data/processed/X_scaled.csv", index=False)
+        if y is not None:
+            pd.Series(y, name="label").to_csv("data/processed/y.csv", index=False)
+
         print("[+] Preprocessing verification complete!")
     except Exception as e:
         print(f"[-] Error during preprocessing check: {e}")
-
-    
