@@ -1,31 +1,81 @@
-# 🚀 EndpointShield AI — FastAPI Service (`api/`)
+## 🛠️ REST API Endpoints & Live Demonstration
 
-This directory contains the production web service that serves static malware predictions over HTTP REST endpoints.
-
+### 1. Health Check Endpoint
+* **HTTP Method:** `GET`
+* **Path:** `/`
+* **Description:** Verifies server uptime, system status, and model engine initialization.
+* **Curl Command:**
+  ```bash
+  curl -X 'GET' '[https://unsettled-cough-labored.ngrok-free.dev/](https://unsettled-cough-labored.ngrok-free.dev/)' -H 'accept: application/json'
+  ```
 ---
+##Binary Scanning & Threat Inference
+HTTP Method: POST
 
-## 📁 Files Included
-* **`main.py`**: Core FastAPI application establishing `/` and `/predict` endpoints.
-* **`../src/predict.py`**: Model wrapper loading `data/processed/baseline_model.pkl`.
-* **`../src/sanity_check.py`**: Input validator checking array dimensions ($1 \times 512$).
+Path: /scan-binary (or /predict)
 
+Description: Accepts a 512-feature static PE binary vector, runs inference through LightGBM, and enforces Sneha's 0.20 asymmetric decision threshold.
+
+Input Constraint: Must contain an array of exactly 512 numerical feature values. Any other length returns an HTTP 400 Bad Request validation error.
 ---
-
-## 🛠️ API Routes & Logic
-
-### 1. Health Check (`GET /`)
-* **Purpose:** Confirms the service is live and reachable.
-* **Response:** `{"status": "online", "model_version": "1.0.0"}`
-
-### 2. Malware Inference (`POST /predict`)
-* **Purpose:** Accepts a JSON vector of 512 static features and returns threat evaluation.
-* **Business Rule:** Enforces Sneha's **0.20 cost-optimized threshold**.
-  * If `malware_probability >= 0.20` $\rightarrow$ `"status": "MALWARE_BLOCKED"`
-  * If `malware_probability < 0.20` $\rightarrow$ `"status": "BENIGN_ALLOWED"`
-
----
-
-## 🧪 Automated Testing
-To run unit tests against these endpoints:
 ```bash
-pytest tests/test_api.py
+ curl -X 'POST' \
+  '[https://unsettled-cough-labored.ngrok-free.dev/scan-binary](https://unsettled-cough-labored.ngrok-free.dev/scan-binary)' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "features": [0.95, 0.98, 0.92, ... 512 values ...]
+}'
+```
+---
+🧪 Live Inference Test Outputs
+A. Malware Detected Payload (High Entropy Sample)
+When a high-risk vector extracted from data/raw/sample_project.csv is submitted:
+
+Response Status: 200 OK
+
+Response Body:
+
+JSON
+{
+  "threat_probability": 0.892,
+  "prediction_label": "MALICIOUS",
+  "applied_threshold": 0.2,
+  "action_recommended": "QUARANTINE_FILE"
+}
+Explanation: Because threat_probability (0.892) >= applied_threshold (0.20), the API automatically triggers a QUARANTINE_FILE recommended action to prevent potential breach costs.
+
+---
+B. Clean Binary Payload (Benign Sample)
+When a benign executable vector is evaluated:
+
+Response Status: 200 OK
+
+Response Body:
+
+JSON
+{
+  "threat_probability": 0.113,
+  "prediction_label": "BENIGN",
+  "applied_threshold": 0.2,
+  "action_recommended": "ALLOW_EXECUTION"
+}
+Explanation: Because threat_probability (0.113) < applied_threshold (0.20), the engine permits execution on host devices.
+---
+C. Input Validation Error (Payload Size Mismatch)
+If an incorrect array length (e.g., 4 features instead of 512) is submitted:
+
+Response Status: 400 Bad Request
+
+Response Body:
+
+JSON
+{
+  "detail": "Payload must contain exactly 512 static features."
+}
+---
+---
+
+### Why this works best for `api/README.md`:
+1. It details the **HTTP Methods (`GET` / `POST`)**, **routes**, and **Curl commands** so developers can copy-paste and test commands from their local terminal.
+2. It documents all three expected HTTP response codes (`200 OK` for Malware, `200 OK` for Benign, and `400 Bad Request` for validation failure) side-by-side with clear explanation notes.
