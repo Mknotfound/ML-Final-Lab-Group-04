@@ -8,32 +8,56 @@ Original file is located at
 """
 
 # create_sample.py
-import pandas as pd
 import os
+import pandas as pd
+import numpy as np
 
-# Path to the downloaded 500MB+ parquet file
-# TEMPORARY: Using an existing CSV file as a placeholder since the parquet file is not found.
-# Please upload 'ember_dataset.parquet' to 'data/raw/' to use the original functionality.
-PARQUET_PATH = "/content/sample_data/mnist_train_small.csv"
-SAMPLE_OUTPUT_PATH = "data/raw/sample.csv"
 
-def generate_light_sample():
-    print("[+] Reading top 2000 rows from source file...")
+def load_dataset(file_path: str) -> pd.DataFrame:
+    """Loads feature matrix CSV file into a pandas DataFrame."""
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"[-] Data file not found at: {file_path}")
 
-    # Ensure the output directory exists
-    os.makedirs(os.path.dirname(SAMPLE_OUTPUT_PATH), exist_ok=True)
+    print(f"[+] Loading dataset from {file_path}...")
+    df = pd.read_csv(file_path)
+    print(f"[+] Successfully loaded shape: {df.shape}")
+    return df
 
-    # Fast reading: Pandas reads Parquet efficiently
-    # If using PyArrow engine, it loads instantly
-    # TEMPORARY: Changed to pd.read_csv to match the placeholder file.
-    df = pd.read_csv(PARQUET_PATH)
 
-    # Take a 2000-row sample (or top 2000 rows)
-    df_sample = df.head(2000)
+def clean_and_split_features(df: pd.DataFrame, target_col: str = "label"):
+    """
+    Separates target labels from feature matrix and removes invalid samples (-1).
+    Returns X (features) and y (binary target).
+    """
+    # Remove unlabeled rows if present in raw EMBER exports
+    if target_col in df.columns:
+        df = df[df[target_col] != -1].reset_index(drop=True)
+        y = df[target_col].values
+        X = df.drop(columns=[target_col])
+    else:
+        y = None
+        X = df
 
-    # Save as sample.csv for GitHub tracking (< 10MB)
-    df_sample.to_csv(SAMPLE_OUTPUT_PATH, index=False)
-    print(f"[+] Success! Saved 2000-row sample to {SAMPLE_OUTPUT_PATH}")
+    # Replace infinite or NaN values if any exist
+    X = X.replace([np.inf, -np.inf], np.nan).fillna(0)
 
-if __name__ == "__main__":
-    generate_light_sample()
+    print(f"[+] Cleaned features matrix shape: {X.shape}")
+    if y is not None:
+        print(
+            f"[+] Label breakdown — Malware (1): {sum(y == 1)}, Benign (0): {sum(y == 0)}"
+        )
+
+    return X, y
+
+
+if _name_ == "_main_":
+    # Test execution on raw sample
+    sample_path = "data/raw/sample.csv"
+    try:
+        raw_df = load_dataset(sample_path)
+        X, y = clean_and_split_features(raw_df)
+        print("[+] Preprocessing verification complete!")
+    except Exception as e:
+        print(f"[-] Error during preprocessing check: {e}")
+
+    
