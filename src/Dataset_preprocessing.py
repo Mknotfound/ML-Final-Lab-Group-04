@@ -50,7 +50,7 @@ def clean_and_split_features(df: pd.DataFrame, target_col: str = "label"):
     return X, y
 
 
-if _name_ == "_main_":
+if __name__ == "_main_":
     # Test execution on raw sample
     sample_path = "data/raw/sample.csv"
     try:
