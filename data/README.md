@@ -1,6 +1,6 @@
 # Data Pipeline & Artifacts Overview
 
-This directory contains raw and processed data artifacts for the **EndpointShield AI** static malware detection pipeline.
+This directory contains raw and processed data artifacts for the **EndpointShield** static malware detection pipeline.
 
 ---
 
