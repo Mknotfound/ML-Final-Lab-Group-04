@@ -1,4 +1,4 @@
-# 📊 EndpointShield AI — Analytical & Evaluation Report
+# 📊 EndpointShield — Analytical & Evaluation Report
 
 This directory consolidates the analytical findings, business risk optimizations, visual assets, and verification proofs for the EndpointShield static malware classification platform.
 
