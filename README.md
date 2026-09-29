@@ -11,7 +11,7 @@ EndpointShield is an enterprise-grade solution designed to classify malicious ve
 
 ---
 
-# 🛡️ EndpointShield AI — Asymmetric Malware Risk Engine
+# 🛡️ EndpointShield — Asymmetric Malware Risk Engine
 
 ![Build Status](https://img.shields.io/badge/API-Passing-brightgreen)
 ![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.94-blue)
