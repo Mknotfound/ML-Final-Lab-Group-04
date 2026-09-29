@@ -1,4 +1,4 @@
-# 🛡️ EndpointShield AI — Enterprise Static Malware Classification Platform
+# 🛡️ EndpointShield — Enterprise Static Malware Classification Platform
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Production-green)](https://fastapi.tiangolo.com/)
@@ -7,7 +7,7 @@
 [![Dashboard](https://img.shields.io/badge/BI-Power%20BI-yellow)](https://powerbi.microsoft.com/)
 
 ## Executive Summary
-EndpointShield AI is an enterprise-grade solution designed to classify malicious versus benign binary files using static features extracted from Portable Executable (PE) headers, byte histograms, and sliding-window entropy values[cite: 1]. Developed for enterprise endpoint security environments, the system evaluates incoming threats without executing files in memory, eliminating execution risk while enforcing cost-optimized threat detection[cite: 1].
+EndpointShield is an enterprise-grade solution designed to classify malicious versus benign binary files using static features extracted from Portable Executable (PE) headers, byte histograms, and sliding-window entropy values[cite: 1]. Developed for enterprise endpoint security environments, the system evaluates incoming threats without executing files in memory, eliminating execution risk while enforcing cost-optimized threat detection[cite: 1].
 
 ---
 
@@ -17,7 +17,7 @@ EndpointShield AI is an enterprise-grade solution designed to classify malicious
 ![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.94-blue)
 ![Decision Cutoff](https://img.shields.io/badge/Risk%20Threshold-0.20-red)
 
-EndpointShield AI is an enterprise-grade static PE malware classification engine. Designed specifically for Security Operations Centers (SOC), the system optimizes for **asymmetric business breach costs** ($100,000 False Negative breach vs. $50 False Positive SOC review cost).
+EndpointShield is an enterprise-grade static PE malware classification engine. Designed specifically for Security Operations Centers (SOC), the system optimizes for **asymmetric business breach costs** ($100,000 False Negative breach vs. $50 False Positive SOC review cost).
 
 ---
 
